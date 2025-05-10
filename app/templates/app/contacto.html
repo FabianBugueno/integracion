@@ -1,0 +1,45 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="{% static 'app/js/traducciones.js' %}"></script>
+    <script src="{% static 'app/js/formulario_jquery.js' %}"></script>
+{% endblock %}
+{% block contenido %} 
+<div  id="contenido">
+        <div class="contenido-contacto">
+            <div class="titulos"><h2>Formulario de contacto</h2>
+            <h6>Rellena los siguientes datos: </h6>
+            </div>
+        <form action="" id="formulario_contacto">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre">
+            <br>
+            <label for="rut">Rut</label>
+            <input type="text" name="rut" id="rut">
+            <br>
+            <label for="correo">Correo electrónico</label>
+            <input type="email" name="email" id="email">
+            <br>
+            <label for="tipo_solicitud">Tipo Solicitud</label>
+            <select name="tipo_solicitud" id="tipo_solicitud">
+                <option value="">Selecionar</option>
+                <option value="sugerencia">Sugerencia</option>
+                <option value="reclamo">Reclamo</option>
+                <option value="consulta">Consulta</option>
+            </select>
+            <br>
+            <label for="mensaje">Mensaje</label>
+            <textarea name="mensaje" id="mensaje" cols="30" row="10"></textarea>
+            <br>
+            <input type="checkbox" name="avisos" id="avisos">
+            <label for="avisos">¿Deseas recibir sugerencias?</label>
+            <br>
+            <input type="reset" value="Limpiar">
+            <button type="button" id="guardar">Guardar</button>
+        </form>
+        </div>
+    </div>
+    
+{% endblock %}
