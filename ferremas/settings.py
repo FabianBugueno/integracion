@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
+    'app.apps.FerremasssConfig',
     'colorfield',
+    'django.contrib.humanize',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"

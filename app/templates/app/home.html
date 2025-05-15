@@ -65,79 +65,24 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+
+    {% load humanize %}
     <div class="productos">
+        {% for p in productos %}
         <div class="producto">
             <div class="contenedor">
-                <img src="{% static 'app/img/La_gioconda.jpg' %}" alt="La_gioconda">
+                {% if p.imagen %}
+                <img src="{{ p.imagen.url}}" alt="La_gioconda">
+                {% endif %}
                 <div class="detalles">
-                    <h3>La Gioconda</h3>
-                    <h6>Autor: Leonardo Davinci</h6>
+                    <p>{{p.marca| capfirst }}</p>
+                    <h4>{{ p.nombre|title }}</h4>
+                    <h5>{{p.precio | intcomma }} </h5>
                 </div>
             </div>
         </div>
-        <div class="producto">
-            <div class="contenedor">
-                <img src="{% static 'app/img/La_noche_estrellada.jpg' %}" alt="La_noche_estrellada">
-                <div class="detalles">
-                    <h3>La Noche estrellada</h3>
-                    <h6>Autor: Vincent van Gogh</h6>
-                </div>
-            </div>
-        </div>
-        <div class="producto">
-            <div class="contenedor">
-                <img src="{% static 'app/img/El_grito.png' %}" alt="El_grito">
-                <div class="detalles">
-                    <h3>El grito</h3>
-                    <h6>Autor: Edvard Munch</h6>
-                </div>
-            </div>
-        </div>
-        <div class="producto">
-            <div class="contenedor">
-                <img src="{% static 'app/img/La_joven_de_la_perla.jpg' %}" alt="La_joven_de_la_perla">
-                <div class="detalles">
-                    <h3>La joven de la perla</h3>
-                    <h6>Autor: Johannes Vermeer</h6>
-                </div>
-            </div>
-        </div>
-        <div class="producto">
-            <div class="contenedor">
-                <img src="{% static 'app/img/El_beso.jpg' %}" alt="El_beso">
-                <div class="detalles">
-                    <h3>El beso</h3>
-                    <h6>Autor: Gustav Klimt</h6>
-                </div>
-            </div>
-        </div>
-        <div class="producto">
-            <div class="contenedor">
-                <img src="{% static 'app/img/Los_elefantes.jpg' %}" alt="Los_elefantes">
-                <div class="detalles">
-                    <h3>Los elefantes</h3>
-                    <h6>Autor: Salvador Dalí</h6>
-                </div>
-            </div>
-        </div>
-        <div class="producto">
-            <div class="contenedor">
-                <img src="{% static 'app/img/Las_senoritas.jpg' %}" alt="Las_senoritas">
-                <div class="detalles">
-                    <h3>Las señoritas de Avignon</h3>
-                    <h6>Autor: Pablo Picasso</h6>
-                </div>
-            </div>
-        </div>
-        <div class="producto">
-            <div class="contenedor">
-                <img src="{% static 'app/img/El_nacimiento_de_venus.jpg' %}" alt="El_nacimiento_de_venus">
-                <div class="detalles">
-                    <h3>El nacimiento de Venus</h3>
-                    <h6>Autor: Sandro Botticelli</h6>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
+        
     </div>
 </div>
 
