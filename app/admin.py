@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Marca, Producto
+from .models import Marca, Producto, contacto 
 # Register your models here.
 
 class ProductoAdmin(admin.ModelAdmin):  
@@ -9,4 +9,5 @@ class ProductoAdmin(admin.ModelAdmin):
     list_filter = ('nuevo', 'marca')
 
 admin.site.register(Marca)
-admin.site.register(Producto, ProductoAdmin)    
+admin.site.register(Producto, ProductoAdmin)   
+admin.site.register(contacto)

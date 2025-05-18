@@ -20,8 +20,8 @@ $("#formulario_contacto").validate({
         },
         email: {
             required: true,
-            email: true,
-            terminaPor: "duoc.cl"
+            email: true
+        
         }, 
         tipo_solicitud: {
             required: true
