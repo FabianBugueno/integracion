@@ -41,8 +41,11 @@ INSTALLED_APPS = [
     'app.apps.FerremasssConfig',
     'colorfield',
     'django.contrib.humanize',
+    'crispy_forms', 
+    'crispy_bootstrap4',
 ]
-
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 

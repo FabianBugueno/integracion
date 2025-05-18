@@ -118,8 +118,7 @@ height: 100%;
   border:1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   padding:5%;
-  display:flex;
-  align-items: flex-start;
+  
 
 }
 .titulos{
@@ -198,7 +197,7 @@ input.error, select.error, textarea.error{
     text-align: center;
     font-size: 40px;
     font-weight: bold;
-    border-bottom: 1px solid #797979;
+   
 }
 
 /*MEDIA QUERIES*/ 

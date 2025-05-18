@@ -7,16 +7,20 @@
     <script src="{% static 'app/js/formulario_jquery.js' %}"></script>
 {% endblock %}
 {% block contenido %} 
+{% load crispy_forms_tags %}
 <div  id="contenido">
         <div class="contenido-contacto">
             <div class="titulos"><h2>Formulario de contacto</h2>
+            <hr>
             <h6>Rellena los siguientes datos: </h6>
         </div>
         <form action="" id="formulario_contacto" method = "post">
             {% csrf_token %}
-            {{form }}
-        <input type="reset" value="Limpiar">
-        <button type="submit" id="guardar">Guardar</button>
+            {{form | crispy }}
+            <div class=" d-flex justify-content-end">
+                <input type="reset" value="Limpiar" class ="btn btn-secondary me-2">
+                <button type="submit" id="guardar" class ="btn btn-primary ">Guardar</button>
+            </div>
         </form>
         {{mensaje}}
         </div>
