@@ -1,5 +1,5 @@
 from django import forms
-from .models import contacto 
+from .models import contacto, Producto
 
 class ContactoForm(forms.ModelForm):
     class Meta:
@@ -11,4 +11,11 @@ class ContactoForm(forms.ModelForm):
             'tipo_consulta': forms.Select(attrs={'class': 'form-control'}),
             'mensaje': forms.Textarea(attrs={'class': 'form-control'}),
             'avisos': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = '__all__'
+        widgets = {
+            "fecha_fabricacion": forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
