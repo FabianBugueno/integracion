@@ -36,48 +36,50 @@
                   Productos
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="productosDropdown">
-              
+
                   <!-- Herramientas Manuales -->
                   <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Herramientas Manuales</a>
+                    <a class="dropdown-item dropdown-toggle" href="{% url 'productos_por_categoria' 1 %}" data-bs-toggle="dropdown" aria-expanded="false">Herramientas Manuales</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Martillos</a></li>
-                      <li><a class="dropdown-item" href="#">Destornilladores</a></li>
-                      <li><a class="dropdown-item" href="#">Llaves</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 1 %}">Martillos</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 2 %}">Destornilladores</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 3 %}">Llaves</a></li>
                     </ul>
                   </li>
               
                   <!-- Herramientas Eléctricas -->
                   <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Herramientas Eléctricas</a>
+                    <a class="dropdown-item dropdown-toggle" href="{% url 'productos_por_categoria' 2 %}" data-bs-toggle="dropdown" aria-expanded="false">Herramientas Eléctricas</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Taladros</a></li>
-                      <li><a class="dropdown-item" href="#">Sierras</a></li>
-                      <li><a class="dropdown-item" href="#">Lijadoras</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 4 %}">Taladros</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 5 %}">Sierras</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 6 %}">Lijadoras</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 7 %}">Materiales de Construcción</a></li>
                     </ul>
                   </li>
               
                   <!-- Materiales Básicos -->
                   <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Materiales Básicos</a>
+                    <a class="dropdown-item dropdown-toggle" href="{% url 'productos_por_categoria' 3 %}" data-bs-toggle="dropdown" aria-expanded="false">Materiales Básicos</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Cemento</a></li>
-                      <li><a class="dropdown-item" href="#">Arena</a></li>
-                      <li><a class="dropdown-item" href="#">Ladrillos</a></li>
-                      <li><a class="dropdown-item" href="#">Pinturas</a></li>
-                      <li><a class="dropdown-item" href="#">Barnices</a></li>
-                      <li><a class="dropdown-item" href="#">Cerámicos</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 8 %}">Cemento</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 9 %}">Arena</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 10 %}">Ladrillos</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 11 %}">Acabados</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 12 %}">Pinturas</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 13 %}">Barnices</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 14 %}">Cerámicos</a></li>
                     </ul>
                   </li>
               
                   <!-- Equipos de Seguridad -->
                   <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Equipos de Seguridad</a>
+                    <a class="dropdown-item dropdown-toggle" href="{% url 'productos_por_categoria' 4 %}" data-bs-toggle="dropdown" aria-expanded="false">Equipos de Seguridad</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Cascos</a></li>
-                      <li><a class="dropdown-item" href="#">Guantes</a></li>
-                      <li><a class="dropdown-item" href="#">Lentes de Seguridad</a></li>
-                      <li><a class="dropdown-item" href="#">Accesorios Varios</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 15 %}">Cascos</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 16 %}">Guantes</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 17 %}">Lentes de Seguridad</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos_por_subcategoria' 18 %}">Accesorios Varios</a></li>
                     </ul>
                   </li>
               
@@ -147,14 +149,14 @@
         <footer class="py-3 my-4">
           <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Inicio</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Contacto</a></li>
+            <li class="nav-item"><a href="{% url 'home'%}" class="nav-link px-2 text-body-secondary">Inicio</a></li>
+            <li class="nav-item"><a href="{% url 'contacto'%}" class="nav-link px-2 text-body-secondary">Contacto</a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Nosotros</a></li>
 
           </ul>
           <p class="text-center text-body-secondary">
             <a href="" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-              <img src="{% static 'app/img/Logo.png' %}" alt="Grupo Cero" width="60" height="30" class="d-inline-block align-text-top">
+              <img src="{% static 'app/img/Logo.png' %}" alt="Ferremas" width="60" height="30" class="d-inline-block align-text-top">
               <span class="mb-3 mb-md-0 text-body-secondary">Ferremas</span>
             </a>
           </p>
@@ -164,17 +166,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
   
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% if messages %}
-        {% for m in messages %}
-          <script>
-            Swal.fire({
-              "title": "Felicitaciones",
-              "text": "{{m}}",
-              "icon": "success", 
-              })
-          </script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        {% for message in messages %}
+          Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+            title: '{{ message|escapejs }}',
+            showConfirmButton: false,
+            timer: 1800
+          });
         {% endfor %}
+      </script>
     {% endif %}
 
   {% block js %}

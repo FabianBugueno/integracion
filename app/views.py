@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Producto
+from .models import Categoria, Producto, Subcategoria
 from .forms import ContactoForm, ProductoForm, CustomUserCreationForm
 from django.contrib import messages
 from django.core.paginator import Paginator 
@@ -9,9 +9,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.http import require_POST
 
 def home(request):
-    productos = Producto.objects.all()
+    productos_list = Producto.objects.all()
+    paginator = Paginator(productos_list, 8)  # 8 productos por página
+    page_number = request.GET.get('page')
+    productos = paginator.get_page(page_number)
     data = {'productos': productos}
-    return render (request, 'app/home.html', data)
+    return render(request, 'app/home.html', data)
 
 def contacto(request):
     data = {
@@ -108,7 +111,9 @@ def agregar_carrito(request, producto_id):
     carrito = request.session.get('carrito', {})
     carrito[str(producto_id)] = carrito.get(str(producto_id), 0) + 1
     request.session['carrito'] = carrito
-    return redirect('carrito')
+    messages.success(request, 'Producto añadido correctamente')
+    # Redirige a la página anterior o al home
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 def eliminar_carrito(request, producto_id):
     carrito = request.session.get('carrito', {})
@@ -126,3 +131,19 @@ def actualizar_carrito(request, producto_id):
         carrito.pop(str(producto_id), None)
     request.session['carrito'] = carrito
     return redirect('carrito')
+
+def productos_por_categoria(request, categoria_id):
+    categoria = get_object_or_404(Categoria, id=categoria_id)
+    productos = Producto.objects.filter(categoria=categoria)
+    return render(request, 'app/productos_por_categoria.html', {
+        'categoria': categoria,
+        'productos': productos
+    })
+
+def productos_por_subcategoria(request, subcategoria_id):
+    subcategoria = get_object_or_404(Subcategoria, id=subcategoria_id)
+    productos = Producto.objects.filter(subcategoria=subcategoria)
+    return render(request, 'app/productos_por_categoria.html', {
+        'categoria': subcategoria,
+        'productos': productos
+    })

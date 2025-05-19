@@ -1,0 +1,30 @@
+{% extends 'app/base.html' %}
+{% load humanize %}
+{% block contenido %}
+<div class="encabezado">
+    <h2>{{ categoria.nombre }}</h2>
+    <hr>
+</div>
+<div class="productos">
+    {% for p in productos %}
+    <div class="producto">
+        <div class="contenedor">
+            {% if p.imagen %}
+            <img src="{{ p.imagen.url }}" alt="image">
+            {% endif %}
+            <div class="detalles">
+                <p>{{ p.marca|capfirst }}</p>
+                <h5>{{ p.nombre|title }}</h5>
+                <h5>$ {{ p.precio|intcomma }}</h5>
+                <hr>
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'agregar_carrito' p.id %}" class="btn btn-primary btn-sm">Agregar al carrito</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay productos en esta categoría.</p>
+    {% endfor %}
+</div>
+{% endblock %}
