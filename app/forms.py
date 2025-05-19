@@ -17,5 +17,13 @@ class ProductoForm(forms.ModelForm):
         model = Producto
         fields = '__all__'
         widgets = {
-            "fecha_fabricacion": forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            "fecha_fabricacion": forms.DateInput(
+                attrs={'class': 'form-control', 'type': 'date'},
+                format='%Y-%m-%d'
+            ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['fecha_fabricacion'].initial = self.instance.fecha_fabricacion.strftime('%Y-%m-%d')

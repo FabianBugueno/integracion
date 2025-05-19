@@ -117,7 +117,10 @@
         </div>
     </nav>
       
-      <div id="contenido">
+      <div id="contenido"> 
+
+        
+
         {% block contenido %}
         {% endblock %}
       </div>
@@ -142,8 +145,22 @@
       </div>
       
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    
-      {% block js %}
-      {% endblock %}     
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        {% for m in messages %}
+          <script>
+            Swal.fire({
+              "title": "Felicitaciones",
+              "text": "{{m}}",
+              "icon": "success", 
+              })
+          </script>
+        {% endfor %}
+    {% endif %}
+
+  {% block js %}
+  {% endblock %}     
 </body>
 </html>

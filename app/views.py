@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import Producto
 from .forms import ContactoForm, ProductoForm
-
+from django.contrib import messages
 
 def home(request):
     productos = Producto.objects.all()
@@ -50,6 +50,7 @@ def modificarProducto(request, id):
         formulario = ProductoForm(data=request.POST, instance=producto, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Producto modificado correctamente!')
             return redirect(to="listar_Productos")
         else:
             data['form'] = formulario
@@ -57,4 +58,5 @@ def modificarProducto(request, id):
 def eliminarProducto(request, id):
     producto = get_object_or_404(Producto, id=id)
     producto.delete()
+    messages.success(request, 'Producto eliminado correctamente!')
     return redirect(to="listar_Productos")

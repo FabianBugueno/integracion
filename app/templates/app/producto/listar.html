@@ -1,7 +1,25 @@
 {% extends 'app/base.html' %}
-
+{% block js %}
+ <script>
+    function eliminarProducto(id){
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción no se puede deshacer!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/eliminar_producto/" + id + "/";
+            }
+        })
+    }
+ </script>
+{% endblock %}
 {% block contenido %}
-{%load humanize %}
+{% load humanize %}
 
 <br><br>
 <div class="card">
@@ -31,8 +49,7 @@
         </td>
         <td>
             <a href="{% url 'modificar_Producto' p.id %}" class=" btn btn-warning btn-sm">Modificar</a>
-            <a href="{% url 'eliminar_Producto' p.id %}" class="btn btn-danger btn-sm">Eliminar
-            </a>
+            <a href="#" onclick="eliminarProducto({{ p.id }}); return false;" class="btn btn-danger btn-sm">Eliminar</a>
         </td>
     </tr>
     {%endfor %}
