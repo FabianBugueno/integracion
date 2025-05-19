@@ -12,7 +12,7 @@
             confirmButtonText: 'Sí, eliminar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "/eliminar_producto/" + id + "/";
+                window.location.href = "/eliminarProducto/" + id + "/";
             }
         })
     }
@@ -35,7 +35,7 @@
         <th> Opciones</th>
         
     </tr>
-    {% for p in productos %}
+    {% for p in entity %}
     <tr>
         <td>{{p.nombre | title}}</td>
         <td>${{p.precio | intcomma }}</td>
@@ -48,13 +48,20 @@
             {% endif %}
         </td>
         <td>
+            {% if perms.app.change_producto %}
             <a href="{% url 'modificar_Producto' p.id %}" class=" btn btn-warning btn-sm">Modificar</a>
+            {% endif %}
+            {% if perms.app.delete_producto %}
             <a href="#" onclick="eliminarProducto({{ p.id }}); return false;" class="btn btn-danger btn-sm">Eliminar</a>
+            {% endif %}
+            
         </td>
     </tr>
     {%endfor %}
 </table>
-    </div>
+</div>
+<br>
+{% include 'app/paginator.html' %}
 </div>
 
 {% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'app/base.html' %}
+{% load dict_extras %}
+
+{% block contenido %}
+<br><br>
+<h2>Carrito de compras</h2>
+<hr>
+<table class="table">
+    <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Subtotal</th>
+        <th></th>
+    </tr>
+    {% for producto in productos %}
+    <tr>
+        <td>{{ producto.nombre }}</td>
+        <td>
+            <form action="{% url 'actualizar_carrito' producto.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="number" name="cantidad" value="{{ cantidades|dict_get:producto.id }}" min="1" style="width:60px;" onchange="this.form.submit()">
+            </form>
+        </td>
+        <td>${{ producto.precio }}</td>
+        <td>${{ cantidades|dict_get:producto.id|multiply:producto.precio }}</td>
+        <td>
+            <a href="{% url 'eliminar_carrito' producto.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="3" class="text-end"><strong>Total:</strong></td>
+        <td colspan="2"><strong>${{ total }}</strong></td>
+    </tr>
+</table>
+{% endblock %}

@@ -100,18 +100,35 @@
                   </svg>
                 </button>
               </form>
-              <a href="#" class="ms-2 d-flex align-items-center">
-                <img src="{% static 'app/img/person.svg' %}" alt="user" width="30" height="30">
+              
+              <a href="{% url 'carrito' %}" class="ms-2 d-flex align-items-center">
+                <img src="{% static 'app/img/bag.svg' %}" alt="carrito" width="30" height="30">
               </a>
-              <a href="#" class="ms-2 d-flex align-items-center">
-                <img src="{% static 'app/img/bag.svg' %}" alt="registro" width="30" height="30">
-              </a>
+              {% if perms.app.add_producto%}
               <a href="{% url 'agregar_Producto'%}"class="ms-2 d-flex align-items-center">
                 <img src="{% static 'app/img/add.png' %}" alt="user" width="30" height="30">
               </a>
+              {% endif %}
+              
+              {% if perms.app.view_producto%}
               <a href="{% url 'listar_Productos'%}" class="ms-2 d-flex align-items-center">
                 <img src="{% static 'app/img/list.png' %}" alt="user" width="30" height="30">
               </a>
+              {% endif %}
+
+              {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="ms-2 d-flex align-items-center" style="background:none; border:none; padding:0;">
+                    <img src="{% static 'app/img/logout.png' %}" alt="cerrar sesión" width="30" height="30">
+                  </button>
+                </form>
+                <span class="ms-2" style="font-weight: bold;">{{ user.username }}</span>
+              {% else %}
+                <a href="{% url 'login' %}" class="ms-2 d-flex align-items-center">
+                  <img src="{% static 'app/img/person.svg' %}" alt="iniciar sesión" width="30" height="30">
+                </a>
+              {% endif %}
             </div>
           </div>
         </div>

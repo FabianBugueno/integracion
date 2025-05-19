@@ -58,6 +58,7 @@
                     <p>{{ p.marca|capfirst }}</p>
                     <h5>{{ p.nombre|title }}</h5>
                     <h5>$ {{ p.precio|intcomma }}</h5>
+                    <a href="{% url 'agregar_carrito' p.id %}" class="btn btn-primary btn-sm">Agregar al carrito</a>
                 </div>
             </div>
         </div>
