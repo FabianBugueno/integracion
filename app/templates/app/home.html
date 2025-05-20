@@ -68,5 +68,28 @@
         {% endfor %}
     </div>
     {% include 'app/paginator.html' with entity=productos paginator=productos.paginator %}
+    <br>
 </div>
+<div class="encabezado">
+    <p>Nuestras oficinas</p>
+    
+<div id="map" style="height: 250px; width: 60%; margin: 0 auto;"></div>
+<script>
+  function initMap() {
+    var ubicacion = { lat: -33.0336892, lng: -71.5331841 }; 
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 18,
+      center: ubicacion
+    });
+    var marker = new google.maps.Marker({
+      position: ubicacion,
+      map: map
+    });
+  }
+  
+</script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSIbl-NmiGJ1J0H70q0GxBdFGx9onClmA&callback=initMap">
+</script>
 {% endblock %}
