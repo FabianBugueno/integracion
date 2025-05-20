@@ -89,6 +89,5 @@ class CustomUserCreationForm(UserCreationForm):
 form = ProductoForm
 
 def agregar_carrito(request, producto_id):
-    # ...tu lógica para agregar al carrito...
     messages.success(request, 'Producto añadido correctamente')
     return redirect('home')  # O la vista que corresponda

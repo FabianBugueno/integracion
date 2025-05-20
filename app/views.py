@@ -7,6 +7,19 @@ from django.http import Http404
 from django.contrib.auth import authenticate, login 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.http import require_POST
+from rest_framework import viewsets
+from .serializers import ProductoSerializer
+
+class ProductoViewSet(viewsets.ModelViewSet):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer  
+
+    def get_queryset(self):
+        productos = Producto.objects.all()
+        nombre = self.request.GET.get('nombre')
+        if nombre:
+            productos = productos.filter(nombre=nombre) 
+        return productos
 
 def home(request):
     productos_list = Producto.objects.all()
@@ -30,17 +43,15 @@ def contacto(request):
     return render (request, 'app/contacto.html',data)
 @permission_required('app.add_producto')
 def agregarProducto(request):
-    data = {
-        'form': ProductoForm()
-    }
     if request.method == 'POST':
-        formulario = ProductoForm(data=request.POST, files=request.FILES)
-        if formulario.is_valid():
-            formulario.save()
-            data['mensaje'] = 'Producto agregado correctamente!'
-        else:
-            data['form'] = formulario
-    return render(request, 'app/producto/agregar.html', data)
+        form = ProductoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Producto añadido con éxito')
+            return redirect('listar_Productos')  # <-- Corrige aquí el nombre
+    else:
+        form = ProductoForm()
+    return render(request, 'app/producto/agregar.html', {'form': form})
 @permission_required('app.view_producto')
 def listarProductos(request):
     productos = Producto.objects.all()
