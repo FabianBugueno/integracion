@@ -1,4 +1,5 @@
 from django import forms
+from django.shortcuts import redirect
 from .models import contacto, Producto, Categoria, Subcategoria
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -90,4 +91,4 @@ form = ProductoForm
 
 def agregar_carrito(request, producto_id):
     messages.success(request, 'Producto añadido correctamente')
-    return redirect('home')  # O la vista que corresponda
+    return redirect('home')  

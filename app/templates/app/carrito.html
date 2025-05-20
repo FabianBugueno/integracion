@@ -42,4 +42,26 @@
         <td colspan="2"><strong>${{ total }}</strong></td>
     </tr>
 </table>
+
+{% if productos %}
+    <div class="d-flex justify-content-end">
+        <!-- SDK MercadoPago.js -->
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
+        <div id="wallet_container"></div>
+        <script>
+            const mp = new MercadoPago('TEST-fd0a2a48-98fe-4ef0-b6e5-830c1abfa462', { locale: 'es-CL' });
+            mp.bricks().create("wallet", "wallet_container", {
+                initialization: {
+                    preferenceId: "{{ preference_id }}"
+                }
+            });
+        </script>
+    </div>
+{% endif %}
+
+{% if mp_error %}
+  <div class="alert alert-danger">
+    Error con Mercado Pago: {{ mp_error.message|default:mp_error }}
+  </div>
+{% endif %}
 {% endblock %}

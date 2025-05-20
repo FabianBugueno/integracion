@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 from .serializers import ProductoSerializer
+import mercadopago
 
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
@@ -112,10 +113,47 @@ def carrito(request):
     productos = Producto.objects.filter(id__in=carrito.keys())
     cantidades = {int(k): v for k, v in carrito.items()}
     total = sum(p.precio * cantidades[p.id] for p in productos)
+
+    sdk = mercadopago.SDK("TEST-430954136832569-051923-a44ba036140ce3f3f75ca27acaff8d6c-426698245")  # Reemplaza por tu access token de Mercado Pago
+
+    items = []
+    for producto in productos:
+        items.append({
+            "title": producto.nombre,
+            "quantity": cantidades[producto.id],
+            "unit_price": float(producto.precio),
+            "currency_id": "CLP",  # Moneda de Chile
+        })
+
+    preference_data = {
+        "items": items,
+        "back_urls": {
+            "success": "https://127.0.0.1:8000/carrito/",
+            "failure": "https://127.0.0.1:8000/carrito/",
+            "pending": "https://127.0.0.1:8000/carrito/",
+        },
+        "auto_return": "approved",
+    }
+
+    preference_response = sdk.preference().create(preference_data)
+    print(preference_response)  # <-- Agrega esto para ver el error en consola
+
+    # Manejo seguro del id
+    preference_id = preference_response["response"].get("id")
+    if not preference_id:
+        return render(request, 'app/carrito.html', {
+            'productos': productos,
+            'cantidades': cantidades,
+            'total': total,
+            'preference_id': None,
+            'mp_error': preference_response["response"]
+        })
+
     return render(request, 'app/carrito.html', {
         'productos': productos,
         'cantidades': cantidades,
         'total': total,
+        'preference_id': preference_id,
     })
 
 def agregar_carrito(request, producto_id):
@@ -158,3 +196,4 @@ def productos_por_subcategoria(request, subcategoria_id):
         'categoria': subcategoria,
         'productos': productos
     })
+
