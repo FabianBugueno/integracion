@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ Compra fallida }}</h2>
+    <ul>
+        {% for p in productos %}
+            <li>{{ p.nombre }} x {{ cantidades.p.id }} - ${{ p.precio|intcomma }}</li>
+        {% endfor %}
+    </ul>
+    <h4>Total: ${{ total|intcomma }}</h4>
+    <a href="{% url 'home' %}" class="btn btn-primary mt-3">Volver al inicio</a>
+</div>
+{% endblock %}

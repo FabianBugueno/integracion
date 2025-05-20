@@ -25,4 +25,7 @@ urlpatterns = [
     path('categoria/<int:categoria_id>/', views.productos_por_categoria, name='productos_por_categoria'),
     path('subcategoria/<int:subcategoria_id>/', views.productos_por_subcategoria, name='productos_por_subcategoria'),  # <-- Agrega esta línea
     path('api/productos/', include(router.urls)), 
+    path('compra/success/', views.compra_exitosa, name='compra_success'),
+    path('compra/failure/', views.compra_fallida, name='compra_failure'),
+    path('compra/pending/', views.compra_pendiente, name='compra_pending'),
 ]

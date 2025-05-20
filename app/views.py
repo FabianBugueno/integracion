@@ -128,11 +128,11 @@ def carrito(request):
     preference_data = {
         "items": items,
         "back_urls": {
-            "success": "https://127.0.0.1:8000/carrito/",
-            "failure": "https://127.0.0.1:8000/carrito/",
-            "pending": "https://127.0.0.1:8000/carrito/",
+            "success": "http://127.0.0.1:8000/compra/success/",
+            "failure": "http://127.0.0.1:8000/compra/failure/",
+            "pending": "http://127.0.0.1:8000/compra/pending/",
         },
-        "auto_return": "approved",
+        # "auto_return": "approved",  # <-- Comenta o elimina esta línea para desarrollo local
     }
 
     preference_response = sdk.preference().create(preference_data)
@@ -195,5 +195,46 @@ def productos_por_subcategoria(request, subcategoria_id):
     return render(request, 'app/productos_por_categoria.html', {
         'categoria': subcategoria,
         'productos': productos
+    })
+
+def compra_exitosa(request):
+    carrito = request.session.get('carrito', {})
+    productos = Producto.objects.filter(id__in=carrito.keys())
+    cantidades = {int(k): v for k, v in carrito.items()}
+    total = sum(p.precio * cantidades[p.id] for p in productos)
+    mensaje = "¡Productos comprados exitosamente!"
+    # Limpia el carrito si quieres
+    request.session['carrito'] = {}
+    return render(request, 'app/compra_success.html', {
+        'productos': productos,
+        'cantidades': cantidades,
+        'total': total,
+        'mensaje': mensaje
+    })
+
+def compra_fallida(request):
+    carrito = request.session.get('carrito', {})
+    productos = Producto.objects.filter(id__in=carrito.keys())
+    cantidades = {int(k): v for k, v in carrito.items()}
+    total = sum(p.precio * cantidades[p.id] for p in productos)
+    mensaje = "La compra ha fallado. Intenta nuevamente."
+    return render(request, 'app/compra_failure.html', {
+        'productos': productos,
+        'cantidades': cantidades,
+        'total': total,
+        'mensaje': mensaje
+    })
+
+def compra_pendiente(request):
+    carrito = request.session.get('carrito', {})
+    productos = Producto.objects.filter(id__in=carrito.keys())
+    cantidades = {int(k): v for k, v in carrito.items()}
+    total = sum(p.precio * cantidades[p.id] for p in productos)
+    mensaje = "La compra está pendiente de confirmación."
+    return render(request, 'app/compra_pending.html', {
+        'productos': productos,
+        'cantidades': cantidades,
+        'total': total,
+        'mensaje': mensaje
     })
 
