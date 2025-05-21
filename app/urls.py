@@ -4,11 +4,16 @@ from .views import home, contacto, agregarProducto, \
     registro, ProductoViewSet
 from rest_framework.routers import DefaultRouter
 from . import views
+from django import template
 
 router = DefaultRouter()
 router.register(r'productos', ProductoViewSet)
 
+register = template.Library()
 
+@register.filter
+def dict_get(d, key):
+    return d.get(key, '')
 
 urlpatterns = [
     path('', home, name="home"),
@@ -28,4 +33,5 @@ urlpatterns = [
     path('compra/success/', views.compra_exitosa, name='compra_success'),
     path('compra/failure/', views.compra_fallida, name='compra_failure'),
     path('compra/pending/', views.compra_pendiente, name='compra_pending'),
+    path('buscar/', views.buscar_productos, name='buscar_productos'),
 ]

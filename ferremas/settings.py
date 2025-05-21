@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-_fwm^5dwgvt--(w+s^(7wnhdl(71v9#8&8@107ujhql^$pb8*b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'fa31-190-164-158-38.ngrok-free.app',
+]
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
@@ -141,4 +145,8 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://fa31-190-164-158-38.ngrok-free.app",
+]
 
