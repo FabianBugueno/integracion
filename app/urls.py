@@ -34,4 +34,7 @@ urlpatterns = [
     path('compra/failure/', views.compra_fallida, name='compra_failure'),
     path('compra/pending/', views.compra_pendiente, name='compra_pending'),
     path('buscar/', views.buscar_productos, name='buscar_productos'),
+    path('mis-compras/', views.mis_compras, name='mis_compras'),
+    path('nosotros/', views.nosotros, name='nosotros'),   path('nosotros/', views.nosotros, name='nosotros'),
 ]
+

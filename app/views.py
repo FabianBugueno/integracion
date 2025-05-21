@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Categoria, Producto, Subcategoria
+from .models import Categoria, Producto, Subcategoria, Compra, CompraProducto
 from .forms import ContactoForm, ProductoForm, CustomUserCreationForm
 from django.contrib import messages
 from django.core.paginator import Paginator 
@@ -109,6 +109,7 @@ def registro(request):
         else:
             data['form'] = formulario
     return render(request, 'registration/registro.html', data)
+@login_required
 def carrito(request):
     carrito = request.session.get('carrito', {})
     productos = Producto.objects.filter(id__in=carrito.keys())
@@ -212,6 +213,7 @@ def productos_por_subcategoria(request, subcategoria_id):
         'productos': productos
     })
 
+@login_required
 def compra_exitosa(request):
     carrito = request.session.get('carrito', {})
     productos = Producto.objects.filter(id__in=carrito.keys())
@@ -220,7 +222,18 @@ def compra_exitosa(request):
     total = sum(p.precio * cantidades[p.id] for p in productos)
     mensaje = "¡Productos comprados exitosamente!"
 
-    # Limpia el carrito solo después de obtener los datos
+    # Guardar la compra solo si hay productos
+    if productos:
+        compra = Compra.objects.create(usuario=request.user)
+        for producto in productos:
+            CompraProducto.objects.create(
+                compra=compra,
+                nombre=producto.nombre,
+                cantidad=cantidades[producto.id],
+                precio=producto.precio
+            )
+
+    # Limpia el carrito solo después de guardar la compra
     request.session['carrito'] = {}
 
     return render(request, 'app/compra_success.html', {
@@ -267,4 +280,12 @@ def buscar_productos(request):
         'productos': productos,
         'query': query,
     })
+
+@login_required
+def mis_compras(request):
+    compras = Compra.objects.filter(usuario=request.user).order_by('-fecha')
+    return render(request, 'app/mis_compras.html', {'compras': compras})
+
+def nosotros(request):
+    return render(request, 'app/nosotros.html')
 

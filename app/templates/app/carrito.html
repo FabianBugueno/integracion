@@ -68,4 +68,12 @@
     Error con Mercado Pago: {{ mp_error.message|default:mp_error }}
   </div>
 {% endif %}
+
+{% if user.is_authenticated %}
+    <!-- Botón de Mercado Pago aquí -->
+{% else %}
+    <div class="alert alert-warning">
+        Debes <a href="{% url 'login' %}?next={% url 'carrito' %}">iniciar sesión</a> para realizar una compra.
+    </div>
+{% endif %}
 {% endblock %}

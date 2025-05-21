@@ -1,59 +1,32 @@
 {% extends 'app/base.html' %}
 {% load humanize %}
+  
 {% block contenido %}
-<div class="encabezado">
-    <h2>{{ categoria.nombre }}</h2>
-    <hr>
-</div>
-<div class="productos">
+<h2>Resultados de búsqueda{% if query %} para "{{ query }}"{% endif %}</h2>
+<hr>
+{% if productos %}
+  <div class="row">
     {% for p in productos %}
-    <div class="producto">
-        <div class="contenedor">
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
+        <div class="card h-100 w-100">
             {% if p.imagen %}
-            <img src="{{ p.imagen.url }}" alt="image">
+            <img src="{{ p.imagen.url }}" class="card-img-top" alt="image">
             {% endif %}
-            <div class="detalles">
-                <p>{{ p.marca|capfirst }}</p>
-                <h5>{{ p.nombre|title }}</h5>
-                <h5>$ {{ p.precio|intcomma }}</h5>
-                <hr>
+            <div class="card-body d-flex flex-column">
+                <p class="mb-1">{{ p.marca|capfirst }}</p>
+                <h5 class="card-title mb-1">{{ p.nombre|title }}</h5>
+                <h5 class="mb-2">$ {{ p.precio|intcomma }}</h5>
+                <hr class="mt-auto mb-2">
                 <div class="d-flex justify-content-end">
                     <a href="{% url 'agregar_carrito' p.id %}" class="btn btn-primary btn-sm">Agregar al carrito</a>
                 </div>
             </div>
         </div>
     </div>
-    {% empty %}
-    <p>No hay productos en esta categoría.</p>
     {% endfor %}
-</div>
-
-<!-- Controles de paginación -->
-<nav aria-label="Page navigation">
-  <ul class="pagination justify-content-center">
-    {% if productos.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ productos.previous_page_number }}">Anterior</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">Anterior</span></li>
-    {% endif %}
-
-    {% for num in productos.paginator.page_range %}
-      {% if productos.number == num %}
-        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-      {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-      {% endif %}
-    {% endfor %}
-
-    {% if productos.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ productos.next_page_number }}">Siguiente</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
-    {% endif %}
-  </ul>
-</nav>
+  </div>
+  {% include 'app/paginator.html' with entity=productos paginator=productos.paginator %}
+{% else %}
+  <p>No se encontraron productos.</p>
+{% endif %}
 {% endblock %}

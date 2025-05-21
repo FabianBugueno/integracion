@@ -1,0 +1,25 @@
+{% extends 'app/base.html' %}
+
+{% block contenido %}
+<br>
+<h2>Mis compras  -  {{ user.username }}</h2> 
+<hr>
+{% if compras %}
+  <ul class="list-group">
+    {% for compra in compras %}
+      <li class="list-group-item">
+        <strong>Compra #{{ compra.id }}</strong> - {{ compra.fecha|date:"d/m/Y H:i" }}
+        <ul>
+          {% for item in compra.productos.all %}
+            <li>
+              {{ item.nombre }} - Cantidad: {{ item.cantidad }} - Precio: ${{ item.precio }}
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No has realizado compras aún.</p>
+{% endif %}
+{% endblock %}

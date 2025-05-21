@@ -47,20 +47,21 @@
     </div>
 
     {% load humanize %}
-    <div class="productos">
+    <br><br>
+    <div class="row">
         {% for p in productos %}
-        <div class="producto">
-            <div class="contenedor">
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
+            <div class="card h-100 w-100">
                 {% if p.imagen %}
-                <img src="{{ p.imagen.url}}" alt="image">
+                <img src="{{ p.imagen.url }}" class="card-img-top" alt="image">
                 {% endif %}
-                <div class="detalles">
-                    <p>{{ p.marca|capfirst }}</p>
-                    <h5>{{ p.nombre|title }}</h5>
-                    <h5>$ {{ p.precio|intcomma }}</h5>
-                    <hr>
+                <div class="card-body d-flex flex-column">
+                    <p class="mb-1">{{ p.marca|capfirst }}</p>
+                    <h5 class="card-title mb-1">{{ p.nombre|title }}</h5>
+                    <h5 class="mb-2">$ {{ p.precio|intcomma }}</h5>
+                    <hr class="mt-auto mb-2">
                     <div class="d-flex justify-content-end">
-                    <a href="{% url 'agregar_carrito' p.id %}" class="btn btn-primary btn-sm ">Agregar al carrito</a>
+                        <a href="{% url 'agregar_carrito' p.id %}" class="btn btn-primary btn-sm">Agregar al carrito</a>
                     </div>
                 </div>
             </div>
