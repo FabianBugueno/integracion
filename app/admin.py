@@ -4,12 +4,12 @@ from .forms import ProductoForm
 # Register your models here.
 
 class ProductoAdmin(admin.ModelAdmin):  
-    list_display = ('nombre', 'precio', 'nuevo', 'marca')
-    list_editable = ('precio',) 
+    list_display = ('nombre', 'precio', 'nuevo', 'marca', 'stock')
+    list_editable = ('precio', 'stock')
     search_fields = ('nombre',)
     list_filter = ('nuevo', 'marca')
-    form = ProductoForm 
-    
+    form = ProductoForm
+
 admin.site.register(Marca)
 admin.site.register(Categoria)
 admin.site.register(Subcategoria)  # <-- Agrega esta línea

@@ -5,12 +5,13 @@ from django.contrib import messages
 from django.core.paginator import Paginator 
 from django.http import Http404 
 from django.contrib.auth import authenticate, login 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 from .serializers import ProductoSerializer
 import mercadopago
 from django.urls import reverse
+from django.contrib.auth.models import Group
 
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
@@ -98,7 +99,10 @@ def registro(request):
     if request.method == 'POST':
         formulario = CustomUserCreationForm(data=request.POST)
         if formulario.is_valid():
-            formulario.save()
+            user = formulario.save()
+            # Asigna automáticamente al grupo "Cliente"
+            grupo_cliente, created = Group.objects.get_or_create(name='Cliente')
+            user.groups.add(grupo_cliente)
             user = authenticate(
                 username=formulario.cleaned_data['username'],
                 password=formulario.cleaned_data['password1']
@@ -140,11 +144,11 @@ def carrito(request):
     preference_data = {
         "items": items,
         "back_urls": {
-            "success": "https://fa31-190-164-158-38.ngrok-free.app/compra/success/",
-            "failure": "https://fa31-190-164-158-38.ngrok-free.app/compra/failure/",
-            "pending": "https://fa31-190-164-158-38.ngrok-free.app/compra/pending/",
+            "success": "http://127.0.0.1:8000/compra/success/",
+            "failure": "http://127.0.0.1:8000/compra/failure/",
+            "pending": "http://127.0.0.1:8000/compra/pending/",
         },
-        "auto_return": "approved",
+        # "auto_return": "approved",  # Elimina o comenta esta línea
     }
 
     preference_response = sdk.preference().create(preference_data)
@@ -288,4 +292,73 @@ def mis_compras(request):
 
 def nosotros(request):
     return render(request, 'app/nosotros.html')
+
+def es_cliente(user):
+    return user.groups.filter(name='Cliente').exists()
+
+def es_vendedor(user):
+    return user.groups.filter(name='Vendedor').exists()
+
+def es_bodeguero(user):
+    return user.groups.filter(name='Bodeguero').exists()
+
+@login_required
+@user_passes_test(es_cliente)
+def vista_cliente(request):
+    compras = Compra.objects.filter(usuario=request.user).order_by('-fecha')
+    return render(request, 'app/vista_cliente.html', {'compras': compras})
+
+@login_required
+@user_passes_test(es_vendedor)
+def vista_vendedor(request):
+    pedidos = Compra.objects.filter(estado='pendiente').order_by('-fecha')
+    return render(request, 'app/vista_vendedor.html', {'pedidos': pedidos})
+
+@login_required
+@user_passes_test(es_bodeguero)
+def vista_bodeguero(request):
+    pedidos = Compra.objects.filter(estado='preparacion').order_by('-fecha')
+    return render(request, 'app/vista_bodeguero.html', {'pedidos': pedidos})
+from django.views.decorators.http import require_POST
+
+@login_required
+@user_passes_test(es_vendedor)
+@require_POST
+def aprobar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Compra, id=pedido_id)
+    # Verifica stock antes de aprobar
+    for item in pedido.productos.all():
+        producto = Producto.objects.get(nombre=item.nombre)
+        if producto.stock < item.cantidad:
+            messages.error(request, f"Stock insuficiente para {producto.nombre}")
+            return redirect('vista_vendedor')
+    # Descuenta stock
+    for item in pedido.productos.all():
+        producto = Producto.objects.get(nombre=item.nombre)
+        producto.stock -= item.cantidad
+        producto.save()
+    pedido.estado = 'preparacion'
+    pedido.save()
+    messages.success(request, f"Pedido #{pedido.id} aprobado y en preparación.")
+    return redirect('vista_vendedor')
+
+@login_required
+@user_passes_test(es_vendedor)
+@require_POST
+def rechazar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Compra, id=pedido_id)
+    pedido.estado = 'rechazado'
+    pedido.save()
+    messages.info(request, f"Pedido #{pedido.id} rechazado.")
+    return redirect('vista_vendedor')
+
+@login_required
+@user_passes_test(es_bodeguero)
+@require_POST
+def marcar_listo(request, pedido_id):
+    pedido = get_object_or_404(Compra, id=pedido_id)
+    pedido.estado = 'listo'
+    pedido.save()
+    messages.success(request, f"Pedido #{pedido.id} marcado como listo para retiro/entrega.")
+    return redirect('vista_bodeguero')
 

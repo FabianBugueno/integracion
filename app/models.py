@@ -31,7 +31,7 @@ class Producto(models.Model):
     subcategoria = models.ForeignKey(Subcategoria, on_delete=models.PROTECT, null=True, blank=True)
     fecha_fabricacion = models.DateField()
     imagen = models.ImageField(upload_to='productos', null=True, blank=True)
-
+    stock = models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.nombre
     
@@ -52,8 +52,16 @@ class contacto(models.Model):
         return self.nombre
 
 class Compra(models.Model):
+    ESTADOS = [
+        ('pendiente', 'Pendiente'),
+        ('rechazado', 'Rechazado'),
+        ('preparacion', 'En preparación'),
+        ('listo', 'Listo para retiro/entrega'),
+        ('finalizado', 'Finalizado'),
+    ]
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
 
     def __str__(self):
         return f"Compra #{self.id} de {self.usuario.username} ({self.fecha})"

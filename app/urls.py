@@ -36,5 +36,11 @@ urlpatterns = [
     path('buscar/', views.buscar_productos, name='buscar_productos'),
     path('mis-compras/', views.mis_compras, name='mis_compras'),
     path('nosotros/', views.nosotros, name='nosotros'),   path('nosotros/', views.nosotros, name='nosotros'),
+    path('cliente/', views.vista_cliente, name='vista_cliente'),
+    path('vendedor/', views.vista_vendedor, name='vista_vendedor'),
+    path('bodeguero/', views.vista_bodeguero, name='vista_bodeguero'),
+    path('vendedor/aprobar/<int:pedido_id>/', views.aprobar_pedido, name='aprobar_pedido'),
+    path('vendedor/rechazar/<int:pedido_id>/', views.rechazar_pedido, name='rechazar_pedido'),
+    path('bodeguero/listo/<int:pedido_id>/', views.marcar_listo, name='marcar_listo'),
 ]
 

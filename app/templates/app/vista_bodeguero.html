@@ -1,0 +1,29 @@
+{% extends 'app/base.html' %}
+{% block contenido %}
+  <h2>Bienvenido, {{ user.username }} (Bodeguero)</h2>
+  <h3>Pedidos en preparación:</h3>
+  {% if pedidos %}
+    <ul class="list-group">
+      {% for pedido in pedidos %}
+        {% if pedido.estado == 'preparacion' %}
+        <li class="list-group-item">
+          <strong>Pedido #{{ pedido.id }}</strong> - {{ pedido.usuario.username }} - {{ pedido.fecha|date:"d/m/Y H:i" }}
+          <ul>
+            {% for item in pedido.productos.all %}
+              <li>
+                {{ item.nombre }} - Cantidad: {{ item.cantidad }} - Precio: ${{ item.precio }}
+              </li>
+            {% endfor %}
+          </ul>
+          <form method="post" action="{% url 'marcar_listo' pedido.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-sm">Marcar como listo</button>
+          </form>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No hay pedidos en preparación.</p>
+  {% endif %}
+{% endblock %}

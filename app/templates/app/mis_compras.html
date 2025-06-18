@@ -9,6 +9,23 @@
     {% for compra in compras %}
       <li class="list-group-item">
         <strong>Compra #{{ compra.id }}</strong> - {{ compra.fecha|date:"d/m/Y H:i" }}
+        <br>
+        <span>
+          Estado: 
+          {% if compra.estado == 'pendiente' %}
+            En proceso
+          {% elif compra.estado == 'preparacion' %}
+            En preparación
+          {% elif compra.estado == 'listo' %}
+            Listo para retiro/entrega
+          {% elif compra.estado == 'rechazado' %}
+            Rechazado
+          {% elif compra.estado == 'finalizado' %}
+            Finalizado
+          {% else %}
+            {{ compra.estado }}
+          {% endif %}
+        </span>
         <ul>
           {% for item in compra.productos.all %}
             <li>
