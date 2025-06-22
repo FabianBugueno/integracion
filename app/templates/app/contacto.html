@@ -23,6 +23,11 @@
             </div>
         </form>
         {{mensaje}}
+        {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success">{{ message }}</div>
+  {% endfor %}
+{% endif %}
         </div>
     </div>
     

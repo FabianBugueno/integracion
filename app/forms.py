@@ -10,13 +10,13 @@ from django.contrib import messages
 class ContactoForm(forms.ModelForm):
     class Meta:
         model = contacto
-        fields = '__all__'
+        # Excluye el campo 'avisos' para que no aparezca en el formulario
+        exclude = ['avisos']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'tipo_consulta': forms.Select(attrs={'class': 'form-control'}),
             'mensaje': forms.Textarea(attrs={'class': 'form-control'}),
-            'avisos': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 class ProductoForm(forms.ModelForm):
     imagen = forms.ImageField(required=False, validators=[MaxSizeFileValidator(max_size=5)])
@@ -91,4 +91,4 @@ form = ProductoForm
 
 def agregar_carrito(request, producto_id):
     messages.success(request, 'Producto añadido correctamente')
-    return redirect('home')  
+    return redirect('home')

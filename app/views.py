@@ -35,15 +35,16 @@ def home(request):
 def contacto(request):
     data = {
         'form': ContactoForm()
-        }
+    }
     if request.method == 'POST':
         formulario = ContactoForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
-            data['mensaje'] = 'Contacto enviado correctamente!'
+            messages.success(request, "Contacto enviado correctamente!")  # Mensaje de éxito
+            data['form'] = ContactoForm()  # Limpia el formulario tras enviar
         else:
             data['form'] = formulario
-    return render (request, 'app/contacto.html',data)
+    return render(request, 'app/contacto.html', data)
 @permission_required('app.add_producto')
 def agregarProducto(request):
     if request.method == 'POST':
