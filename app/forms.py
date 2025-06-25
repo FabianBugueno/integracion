@@ -4,7 +4,8 @@ from .models import contacto, Producto, Categoria, Subcategoria
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .validators import MaxSizeFileValidator
-from django.forms import ValidationError, DateInput
+from django.forms import ValidationError
+from django.forms.widgets import DateInput
 from django.contrib import messages
 
 class ContactoForm(forms.ModelForm):
@@ -28,7 +29,10 @@ class ProductoForm(forms.ModelForm):
         model = Producto
         exclude = []
         widgets = {
-            'fecha_fabricacion': DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'fecha_fabricacion': DateInput(
+                attrs={'type': 'date', 'class': 'form-control'},
+                format='%Y-%m-%d'
+            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -56,6 +60,10 @@ class ProductoForm(forms.ModelForm):
 
         self.fields['categoria'].widget = forms.HiddenInput()
         self.fields['subcategoria'].widget = forms.HiddenInput()
+
+        # Inicializa la fecha en formato correcto si es edición
+        if self.instance and self.instance.pk and self.instance.fecha_fabricacion:
+            self.fields['fecha_fabricacion'].initial = self.instance.fecha_fabricacion.strftime('%Y-%m-%d')
 
     def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre')
